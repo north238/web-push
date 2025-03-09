@@ -1,0 +1,56 @@
+services:
+  app:
+    container_name: web-push-php
+    ports:
+      - '5173:5173'
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    networks:
+      - web-push
+    volumes:
+      - ./src:/var/www/html
+    env_file:
+      - .env
+
+  web:
+    container_name: web-push-nginx
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    ports:
+      - '8080:80'
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - web-push
+    depends_on:
+      - app
+      - db
+    env_file:
+      - .env
+
+  db:
+    container_name: web-push-mysql
+    image: mysql:8.0
+    command: mysqld --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - TZ=${TZ}
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+      - '13307:3306'
+    restart: unless-stopped
+    networks:
+      - web-push
+    env_file:
+      - .env
+
+networks:
+  web-push:
+    driver: bridge
