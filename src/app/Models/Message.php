@@ -30,4 +30,22 @@ class Message extends Model
     {
         return $this->belongsTo(User::class, 'receive_user_id');
     }
+
+    /**
+     * メッセージ一覧を取得
+     */
+    public function getMessageList()
+    {
+        return $this->with(['postUser', 'receiveUser'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    /**
+     * メッセージを保存
+     */
+    public function createMessage(array $data)
+    {
+        return $this->create($data);
+    }
 }

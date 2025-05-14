@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
 
     // メッセージ
     Route::get('/message', [MessageController::class, 'index'])->name('message.index');
+    Route::post('/message', [MessageController::class, 'store'])->name('message.store');
 });
 
 require __DIR__.'/auth.php';
