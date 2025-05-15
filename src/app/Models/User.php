@@ -52,4 +52,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Message::class, 'id');
     }
+
+    /**
+     * ユーザー名で取得
+     */
+    public function getUserByName(string $name): ?int
+    {
+        return $this->query()
+            ->where('name', $name)
+            ->value('id');
+    }
 }

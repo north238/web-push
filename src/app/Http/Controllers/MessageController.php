@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MessageCreateRequest;
 use App\Models\Message;
+use App\Models\User;
 use App\Services\MessageService;
 use Exception;
 use Illuminate\Http\Request;
@@ -11,6 +12,10 @@ use Illuminate\Support\Facades\Log;
 
 class MessageController extends Controller
 {
+    /**
+     * @var User $users
+     */
+    protected $users;
     /**
      * @var Message $messages
      */
@@ -20,8 +25,9 @@ class MessageController extends Controller
      */
     protected $messageServices;
 
-    public function __construct(Message $messages, MessageService $messageServices)
+    public function __construct(User $users, Message $messages, MessageService $messageServices)
     {
+        $this->users = $users;
         $this->messages = $messages;
         $this->messageServices = $messageServices;
     }
@@ -59,8 +65,16 @@ class MessageController extends Controller
             }
 
             // ユーザーIDを取得
+            $receiveUserName = $validated['receive_user_name'];
+            $receiveUserId = $this->users->getUserByName($receiveUserName);
+            if (!$receiveUserId) {
+                Log::error('【メッセージ】ユーザー該当なし', [
+                    'validated' => $validated
+                ]);
+                return back()->with('error', 'ユーザーが存在しません');
+            }
+            $validated['receive_user_id'] = $receiveUserId;
             $validated['post_user_id'] = auth()->id();
-            $validated['receive_user_id'] = $request->input('receive_user_id');
 
             // メッセージの保存
             $message = $this->messages->createMessage($validated);

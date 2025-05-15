@@ -25,10 +25,12 @@
                     </div>
                     <form method="POST" action="{{ route('message.store') }}" class="mt-4">
                         @csrf
-                        <div class="flex">
-                            <input type="text" name="content" class="flex-1 p-2 border border-gray-300 dark:border-gray-700 rounded-lg" placeholder="メッセージを入力..." required>
-                            <input type="text" name="" class="flex-1 p-2 border border-gray-300 dark:border-gray-700 rounded-lg" placeholder="メッセージを入力..." required>
-                            <button type="submit" class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg disabled:opacity-60" disabled>送信</button>
+                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                            <x-text-input id="receive-user-text" type="text" name="receive_user_name" class="h-10" placeholder="受信者を入力..." required  autofocus/>
+                            <x-textarea id="message-text" name="text" class="flex-1 h-20" required></x-textarea>
+                            <x-primary-button id="message-send-btn" class="ml-4 h-10" disabled>
+                                送信
+                            </x-primary-button>
                         </div>
                     </form>
                 </div>
@@ -36,3 +38,5 @@
         </div>
     </div>
 </x-app-layout>
+
+@vite(['resources/js/message.js'])
