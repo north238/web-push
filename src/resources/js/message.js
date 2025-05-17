@@ -10,8 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const checkInputs = () => {
         // 両方の入力欄に値があるかチェック
         if (
-            receiveUserText.value.trim() !== "" &&
-            messageText.value.trim() !== ""
+            receiveUserText?.value.trim() !== "" &&
+            messageText?.value.trim() !== ""
         ) {
             // 両方に入力があればボタンを有効化
             messageSendBtn.disabled = false;
@@ -22,8 +22,12 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // 両方の入力欄のイベントリスナーを設定
-    receiveUserText.addEventListener("input", checkInputs);
-    messageText.addEventListener("input", checkInputs);
+    if (receiveUserText) {
+        receiveUserText.addEventListener("input", checkInputs);
+    }
+    if (messageText) {
+        messageText.addEventListener("input", checkInputs);
+    }
 
     // 初期状態の確認
     checkInputs();

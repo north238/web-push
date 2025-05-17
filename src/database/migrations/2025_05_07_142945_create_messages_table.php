@@ -16,7 +16,7 @@ return new class extends Migration
             $table->text('text')->nullable()->comment('テキスト');
             $table->string('file_path')->nullable()->comment('画像ファイルのパス');
             $table->unsignedBigInteger('post_user_id')->comment('送信者のID'); // usersテーブルからリレーション
-            $table->unsignedBigInteger('receive_user_id')->comment('受信者のID'); // usersテーブルからリレーション
+            $table->unsignedBigInteger('receive_user_id')->nullable()->comment('受信者のID'); // usersテーブルからリレーション
             $table->timestamps();
 
             $table->foreign('post_user_id')->references('id')->on('users')->onDelete('cascade');

@@ -24,7 +24,7 @@ class MessageCreateRequest extends FormRequest
         return [
             'text' => 'required|string|max:255',
             'file_path' => 'nullable|file|mimes:jpg,jpeg,png,gif,mp4|max:2048',
-            'receive_user_name' => 'required|exists:users,id',
+            'receive_user_name' => 'nullable|exists:users,name',
         ];
     }
 

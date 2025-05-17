@@ -38,6 +38,7 @@ class MessageController extends Controller
     {
         // メッセージ一覧を取得
         $messages = $this->messages->getMessageList();
+
         return view('message.index', compact('messages'));
     }
 
@@ -65,15 +66,16 @@ class MessageController extends Controller
             }
 
             // ユーザーIDを取得
-            $receiveUserName = $validated['receive_user_name'];
-            $receiveUserId = $this->users->getUserByName($receiveUserName);
-            if (!$receiveUserId) {
-                Log::error('【メッセージ】ユーザー該当なし', [
-                    'validated' => $validated
-                ]);
-                return back()->with('error', 'ユーザーが存在しません');
-            }
-            $validated['receive_user_id'] = $receiveUserId;
+            // $receiveUserName = $validated['receive_user_name'];
+            // $receiveUserId = $this->users->getUserByName($receiveUserName);
+            // if (!$receiveUserId) {
+            //     Log::error('【メッセージ】ユーザー該当なし', [
+            //         'validated' => $validated
+            //     ]);
+            //     return back()->with('error', 'ユーザーが存在しません');
+            // }
+
+            // $validated['receive_user_id'] = $receiveUserId;
             $validated['post_user_id'] = auth()->id();
 
             // メッセージの保存
