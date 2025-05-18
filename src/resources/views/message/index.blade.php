@@ -42,6 +42,8 @@
             </form>
         </div>
     </div>
+
+    @include('message.signature-pad-modal')
 </x-app-layout>
 
-@vite(['resources/js/message.js'])
+@vite(['resources/js/message.js', 'resources/js/signature-pad.js'])

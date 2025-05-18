@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const receiveUserText = document.getElementById("receive-user-text");
     const messageText = document.getElementById("message-text");
     const messageSendBtn = document.getElementById("message-send-btn");
+    const writePadBtn = document.getElementById("write-pad-btn");
 
     // 初期状態ではボタンを無効化しておく
     messageSendBtn.disabled = true;
