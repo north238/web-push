@@ -9,6 +9,7 @@ use App\Services\MessageService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class MessageController extends Controller
 {
@@ -85,12 +86,38 @@ class MessageController extends Controller
             }
 
             return back()->with('success', 'メッセージを送信しました');
-
         } catch (Exception $e) {
             report($e);
 
             return back()->with('error', 'メッセージ送信に失敗しました');
         }
+    }
+
+    /**
+     * メッセージ画像を保存する
+     */
+    public function sendImageMessage(Request $request)
+    {
+        $dataUrl = $request->input('image');
+
+        if (!preg_match('/^data:image\/svg\+xml;base64,/', $dataUrl)) {
+            return response()->json(['error' => 'Invalid image format.'], 400);
+        }
+
+        $imageData = base64_decode(str_replace('data:image/svg+xml;base64,', '', $dataUrl));
+
+        $filename = 'messages_image' . time() . '.svg';
+        $path = storage_path('app/public/messages/' . $filename);
+
+        Storage::put($path, $imageData);
+
+        $saveData = [
+            'file_path' => $path,
+            'post_user_id' => $request->user()->id,
+        ];
+        $messageImage = $this->messages->createMessage($saveData);
+
+        return response()->json(['message' => 'Saved', 'path' => $messageImage->file_path]);
     }
 
     /**

@@ -19,55 +19,44 @@ window.onresize = resizeCanvas;
 resizeCanvas();
 
 const signaturePad = new SignaturePad(canvas, {
-    backgroundColor: "rgb(255, 255, 255)", // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
-    penColor: "white"
+    backgroundColor: "#efefef", // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
+    penColor: "black"
 });
 
-document.getElementById("save-png").addEventListener("click", function () {
+document.getElementById("save-svg").addEventListener("click", () => {
     if (signaturePad.isEmpty()) {
-        return alert("Please provide a signature first.");
+        return alert("記入してください");
     }
 
-    const data = signaturePad.toDataURL("image/png");
-    console.log(data);
-    window.open(data);
+    const svgData  = signaturePad.toDataURL("image/svg+xml");
+
+    fetch("/api/messages/image", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+        },
+        body: JSON.stringify({ image: svgData })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Saved:", data);
+    });
 });
 
-document.getElementById("save-jpeg").addEventListener("click", function () {
-    if (signaturePad.isEmpty()) {
-        return alert("Please provide a signature first.");
-    }
-
-    const data = signaturePad.toDataURL("image/jpeg");
-    console.log(data);
-    window.open(data);
-});
-
-document.getElementById("save-svg").addEventListener("click", function () {
-    if (signaturePad.isEmpty()) {
-        return alert("Please provide a signature first.");
-    }
-
-    const data = signaturePad.toDataURL("image/svg+xml");
-    console.log(data);
-    console.log(atob(data.split(",")[1]));
-    window.open(data);
-});
-
-document.getElementById("clear").addEventListener("click", function () {
+document.getElementById("clear").addEventListener("click", () => {
     signaturePad.clear();
 });
 
-document.getElementById("draw").addEventListener("click", function () {
+document.getElementById("draw").addEventListener("click", () => {
     signaturePad.compositeOperation = "source-over"; // default value
-    console.log(signaturePad);
 });
 
-document.getElementById("erase").addEventListener("click", function () {
+document.getElementById("erase").addEventListener("click", () => {
     signaturePad.compositeOperation = "destination-out";
 });
 
-document.getElementById("undo").addEventListener("click", function () {
+document.getElementById("undo").addEventListener("click", () => {
     const data = signaturePad.toData();
     if (data) {
         data.pop(); // remove the last dot or line
