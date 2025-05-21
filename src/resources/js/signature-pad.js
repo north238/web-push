@@ -30,7 +30,7 @@ document.getElementById("save-svg").addEventListener("click", () => {
 
     const svgData  = signaturePad.toDataURL("image/svg+xml");
 
-    fetch("/api/messages/image", {
+    fetch("/message/image", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -38,9 +38,16 @@ document.getElementById("save-svg").addEventListener("click", () => {
         },
         body: JSON.stringify({ image: svgData })
     })
-    .then(response => response.json())
+    .then((response) => {
+        const res = response.json();
+        if (response.status !== 200) {
+            return alert("Error: " + res.message);
+        }
+        return res;
+    })
     .then(data => {
         console.log("Saved:", data);
+        location.reload();
     });
 });
 

@@ -4,7 +4,7 @@
             <div class="max-w-4xl mx-auto space-y-4">
                 <div class="p-2 text-gray-900 bg-white rounded shadow-sm dark:text-gray-100">
                     @foreach ($messages as $message)
-                        <x-message-card :post-user="$message->formatted_post_user" :created-at="$message->diff_created_at" :text="$message->text" :image-src="$message->postUser->profile_image ?? ''" />
+                        <x-message-card :post-user="$message->formatted_post_user" :created-at="$message->diff_created_at" :text="$message->text" :image="$message->file_path" :image-src="$message->postUser->profile_image ?? ''" />
                     @endforeach
                 </div>
             </div>

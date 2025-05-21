@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
     // メッセージ
     Route::get('/message', [MessageController::class, 'index'])->name('message.index');
     Route::post('/message', [MessageController::class, 'store'])->name('message.store');
+    Route::post('/message/image', [MessageController::class, 'sendImageMessage'])->name('api.message.store');
 });
 
 require __DIR__.'/auth.php';

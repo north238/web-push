@@ -1,4 +1,4 @@
-@props(['postUser', 'createdAt', 'text', 'imageSrc' => ''])
+@props(['postUser', 'createdAt', 'text', 'image', 'imageSrc' => ''])
 
 @php
     $bgColor = 'bg-gray-300';
@@ -17,7 +17,11 @@
             <span class="text-gray-500">{{ $createdAt }}</span>
         </div>
         <div class="{{ $bgColor }} p-3 rounded-r-lg rounded-bl-lg">
-            <p class="text-sm">{!! nl2br(e($text)) !!}</p>
+            @if (empty($text))
+                <img src="{{ asset('storage/' . $image) }}" alt="image">
+            @else
+                <p class="text-sm">{!! nl2br(e($text)) !!}</p>
+            @endif
         </div>
     </div>
 </div>

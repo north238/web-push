@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\MessageService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -59,12 +60,6 @@ class MessageController extends Controller
         $validated = $request->validated();
 
         try {
-            // ファイルの保存
-            if ($request->hasFile('file_path')) {
-                $file = $validated['file_path'];
-                $filePath = $this->messageServices->saveFile($file);
-                $validated['file_path'] = $filePath;
-            }
 
             // ユーザーIDを取得
             // $receiveUserName = $validated['receive_user_name'];
@@ -101,23 +96,18 @@ class MessageController extends Controller
         $dataUrl = $request->input('image');
 
         if (!preg_match('/^data:image\/svg\+xml;base64,/', $dataUrl)) {
-            return response()->json(['error' => 'Invalid image format.'], 400);
+            return response()->json(['error' => 'ファイル形式が異なります'], 400);
         }
 
-        $imageData = base64_decode(str_replace('data:image/svg+xml;base64,', '', $dataUrl));
-
-        $filename = 'messages_image' . time() . '.svg';
-        $path = storage_path('app/public/messages/' . $filename);
-
-        Storage::put($path, $imageData);
+        $path = $this->messageServices->saveFile($dataUrl);
 
         $saveData = [
             'file_path' => $path,
-            'post_user_id' => $request->user()->id,
+            'post_user_id' => Auth::user()->id,
         ];
         $messageImage = $this->messages->createMessage($saveData);
 
-        return response()->json(['message' => 'Saved', 'path' => $messageImage->file_path]);
+        return response()->json(['message' => 'ファイル保存が完了しました', 'path' => $messageImage->file_path]);
     }
 
     /**
