@@ -1,6 +1,7 @@
 import SignaturePad from "signature_pad";
 
 const canvas = document.getElementById("signature-pad");
+const writePadBtn = document.getElementById("write-pad-btn");
 
 // Adjust canvas coordinate space taking into account pixel ratio,
 // to make it look crisp on mobile devices.
@@ -16,11 +17,19 @@ function resizeCanvas() {
 }
 
 window.onresize = resizeCanvas;
-resizeCanvas();
 
-const signaturePad = new SignaturePad(canvas, {
-    backgroundColor: "#efefef", // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
-    penColor: "black"
+document.addEventListener("open-modal", (e) => {
+    if (e.detail === "signature-pad-modal") {
+        setTimeout(() => {
+            resizeCanvas();
+            if (!window.signaturePad) {
+                window.signaturePad = new SignaturePad(canvas, {
+                    backgroundColor: "#efefef",
+                    penColor: "black"
+                });
+            }
+        }, 200); // モーダル描画待ち
+    }
 });
 
 document.getElementById("save-svg").addEventListener("click", () => {
@@ -41,7 +50,7 @@ document.getElementById("save-svg").addEventListener("click", () => {
     .then((response) => {
         const res = response.json();
         if (response.status !== 200) {
-            return alert("Error: " + res.message);
+            return alert("エラー：" + res.message);
         }
         return res;
     })
