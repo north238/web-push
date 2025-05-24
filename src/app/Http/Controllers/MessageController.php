@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageSent;
 use App\Http\Requests\MessageCreateRequest;
 use App\Models\Message;
 use App\Models\User;
@@ -9,8 +10,6 @@ use App\Services\MessageService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 class MessageController extends Controller
 {
@@ -80,6 +79,8 @@ class MessageController extends Controller
                 throw new Exception('メッセージの保存に失敗しました');
             }
 
+            broadcast(new MessageSent($message))->toOthers();
+
             return back()->with('success', 'メッセージを送信しました');
         } catch (Exception $e) {
             report($e);
@@ -105,9 +106,11 @@ class MessageController extends Controller
             'file_path' => $path,
             'post_user_id' => Auth::user()->id,
         ];
-        $messageImage = $this->messages->createMessage($saveData);
+        $message = $this->messages->createMessage($saveData);
 
-        return response()->json(['message' => 'ファイル保存が完了しました', 'path' => $messageImage->file_path]);
+        broadcast(new MessageSent($message))->toOthers();
+
+        return response()->json(['message' => 'ファイル保存が完了しました', 'path' => $message->file_path]);
     }
 
     /**

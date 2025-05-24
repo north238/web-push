@@ -2,7 +2,7 @@
     <div class="flex flex-col h-[calc(100vh-64px)] min-h-[calc(100vh-64px)]">
         <div class="flex-1 overflow-y-auto p-2">
             <div class="max-w-4xl mx-auto space-y-4">
-                <div class="p-2 text-gray-900 bg-white rounded shadow-sm dark:text-gray-100">
+                <div id="message-list" class="p-2 text-gray-900 bg-white rounded shadow-sm dark:text-gray-100">
                     @foreach ($messages as $message)
                         <x-message-card :post-user="$message->formatted_post_user" :created-at="$message->diff_created_at" :text="$message->text" :image="$message->file_path"
                             :image-src="$message->postUser->profile_image ?? ''" />
@@ -50,4 +50,4 @@
     </x-modal>
 </x-app-layout>
 
-@vite(['resources/js/message.js', 'resources/js/signature-pad.js'])
+@vite(['resources/js/message.js', 'resources/js/pusher.js', 'resources/js/signature-pad.js'])

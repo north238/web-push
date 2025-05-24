@@ -17,6 +17,8 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
+        "laravel-echo": "^2.1.4",
+        "pusher-js": "^8.4.0",
         "signature_pad": "^5.0.7"
     }
 }
