@@ -25,11 +25,6 @@ class MessageService
         [$meta, $content] = explode(',', $imageData);
         $decodedData = base64_decode($content);
 
-        Log::info('ファイルメタデータ', [
-            'meta' => $meta,
-            'decodedData' => $decodedData,
-        ]);
-
         Storage::disk('public')->put($filePath, $decodedData);
 
         return $filePath;

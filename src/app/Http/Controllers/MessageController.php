@@ -79,6 +79,7 @@ class MessageController extends Controller
                 throw new Exception('メッセージの保存に失敗しました');
             }
 
+            // イベントをブロードキャスト
             broadcast(new MessageSent($message))->toOthers();
 
             return back()->with('success', 'メッセージを送信しました');
@@ -96,21 +97,31 @@ class MessageController extends Controller
     {
         $dataUrl = $request->input('image');
 
-        if (!preg_match('/^data:image\/svg\+xml;base64,/', $dataUrl)) {
-            return response()->json(['error' => 'ファイル形式が異なります'], 400);
+        try {
+            if (!preg_match('/^data:image\/svg\+xml;base64,/', $dataUrl)) {
+                return response()->json(['error' => 'ファイル形式が異なります'], 400);
+            }
+
+            $path = $this->messageServices->saveFile($dataUrl);
+
+            $saveData = [
+                'file_path' => $path,
+                'post_user_id' => Auth::user()->id,
+            ];
+            $message = $this->messages->createMessage($saveData);
+            if (!$message) {
+                throw new Exception('メッセージの保存に失敗しました');
+            }
+
+            // イベントをブロードキャスト
+            broadcast(new MessageSent($message))->toOthers();
+
+            return response()->json(['message' => 'ファイル保存が完了しました', 'path' => $message->file_path]);
+        } catch (Exception $e) {
+            report($e);
+
+            return back()->with('error', 'メッセージ送信に失敗しました');
         }
-
-        $path = $this->messageServices->saveFile($dataUrl);
-
-        $saveData = [
-            'file_path' => $path,
-            'post_user_id' => Auth::user()->id,
-        ];
-        $message = $this->messages->createMessage($saveData);
-
-        broadcast(new MessageSent($message))->toOthers();
-
-        return response()->json(['message' => 'ファイル保存が完了しました', 'path' => $message->file_path]);
     }
 
     /**
