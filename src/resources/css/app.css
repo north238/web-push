@@ -39,4 +39,8 @@ textarea {
   border-radius: 5px;
   background-color: #efefef;
   cursor: crosshair;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  touch-action: manipulation;
 }

@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="flex flex-col h-[calc(100vh-64px)] min-h-[calc(100vh-64px)]">
+    <div class="flex flex-col h-[calc(100dvh-64px)] min-h-[calc(100dvh-64px)]">
         <div class="flex-1 overflow-y-auto p-2">
             <div class="max-w-4xl mx-auto space-y-4">
                 <div id="message-list" class="flex flex-col w-full p-2 text-gray-900 bg-white rounded shadow-sm dark:text-gray-100">
