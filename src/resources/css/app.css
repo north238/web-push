@@ -24,28 +24,31 @@ textarea {
 }
 
 .wrapper {
-  position: relative;
-  width: 400px;
-  height: 200px;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 800px;
+  height: 60vh;
+  max-height: 500px;
   user-select: none;
-  margin: 10px;
+  background-color: #f9f9f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  border-radius: 4px;
+  z-index: 9999;
 }
 
 .signature-pad {
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  width: 390px;
-  height: 190px;
-  border: 1px black dashed;
-  border-radius: 5px;
-  background-color: #efefef;
+  width: 100%;
+  height: 100%;
+  border: 1px dashed #333;
+  border-radius: 4px;
+  background-color: #fff;
   cursor: crosshair;
+  touch-action: none;
   user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  touch-action: manipulation;
 }

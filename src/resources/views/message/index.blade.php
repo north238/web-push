@@ -3,7 +3,7 @@
         <div class="flex-1 overflow-y-auto p-2">
             <div class="max-w-4xl mx-auto space-y-4">
                 <div id="message-list"
-                    class="flex flex-col w-full p-2 text-gray-900 bg-white rounded shadow-sm dark:text-gray-100">
+                    class="flex flex-col w-full p-2 text-gray-900 bg-white rounded shadow-sm ">
                     @foreach ($messages as $message)
                         <x-message-card :post-user="$message->formatted_post_user" :created-at="$message->diff_created_at" :text="$message->text" :image="$message->file_path"
                             :image-src="$message->postUser->profile_image ?? ''" />
@@ -25,8 +25,7 @@
                 </div>
                 <div class="flex flex-col items-center gap-1">
                     <button type="button" id="write-pad-btn"
-                        class="p-2 text-white bg-blue-600 rounded-full hover:bg-blue-700 disabled:opacity-50 transition"
-                        x-data="" x-on:click="$dispatch('open-modal', 'signature-pad-modal')">
+                        class="p-2 text-white bg-blue-600 rounded-full hover:bg-blue-700 disabled:opacity-50 transition">
                         <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round">
@@ -53,9 +52,7 @@
         </div>
     </div>
 
-    <x-modal name="signature-pad-modal" maxWidth="xl" focusable>
-        @include('message.signature-pad-modal')
-    </x-modal>
+    @include('message.signature-pad-modal')
 </x-app-layout>
 
 @vite(['resources/js/message.js', 'resources/js/pusher.js', 'resources/js/signature-pad.js'])
