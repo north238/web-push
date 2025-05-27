@@ -73,14 +73,6 @@ document.getElementById("clear").addEventListener("click", () => {
     signaturePad.clear();
 });
 
-document.getElementById("draw").addEventListener("click", () => {
-    signaturePad.compositeOperation = "source-over"; // default value
-});
-
-document.getElementById("erase").addEventListener("click", () => {
-    signaturePad.compositeOperation = "destination-out";
-});
-
 document.getElementById("undo").addEventListener("click", () => {
     const data = signaturePad.toData();
     if (data) {
