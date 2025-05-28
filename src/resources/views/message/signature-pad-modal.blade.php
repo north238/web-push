@@ -1,6 +1,6 @@
 <section id="signature-section" class="fixed top-0 left-0 w-screen h-screen hidden bg-white/80">
     <div class="wrapper">
-        <canvas id="signature-pad" class="signature-pad" width="600" height="400"></canvas>
+        <canvas id="signature-pad" class="signature-pad" width="300" height="300"></canvas>
         <div class="flex flex-col p-3">
             <div class="flex">
                 <div class="flex flex-col text-center gap-1 m-2">
