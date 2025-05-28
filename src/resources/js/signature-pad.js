@@ -23,26 +23,33 @@ writePadBtn.addEventListener("click", (e) => {
     e.preventDefault();
     signatureSection.classList.remove("hidden");
     setTimeout(() => {
-        resizeCanvas();
         if (!window.signaturePad) {
             window.signaturePad = new SignaturePad(canvas, {
                 backgroundColor: "#efefef",
                 penColor: "black",
             });
         }
+
+        resizeCanvas();
     }, 200); // モーダル描画待ち
 });
 
 // モーダルを開く
-document.getElementById('close-signature').addEventListener('click', () => {
-    document.getElementById('signature-section').classList.add('hidden');
+document.getElementById("close-signature").addEventListener("click", () => {
+    document.getElementById("signature-section").classList.add("hidden");
 });
 
-// モーダルを閉じる
-document.getElementById("save-svg").addEventListener("click", () => {
+// 保存処理
+let isSubmitting = false;
+document.getElementById("save-svg").addEventListener("click", (e) => {
+    if (isSubmitting) return; // 二重クリック防止
+
     if (signaturePad.isEmpty()) {
         return alert("記入してください");
     }
+
+    isSubmitting = true;
+    e.target.disabled = true;
 
     const svgData = signaturePad.toDataURL("image/svg+xml");
 
@@ -64,8 +71,10 @@ document.getElementById("save-svg").addEventListener("click", () => {
             return res;
         })
         .then((data) => {
-            console.log("Saved:", data);
-            location.reload();
+
+            isSubmitting = false;
+            e.target.disabled = false;
+            document.getElementById("signature-section").classList.add("hidden");
         });
 });
 
