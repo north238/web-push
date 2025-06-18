@@ -18,6 +18,9 @@
                     <x-nav-link :href="route('message.index')" :active="request()->routeIs('message.index')">
                         チャット
                     </x-nav-link>
+                    <x-nav-link :href="route('documents.create')" :active="request()->routeIs('documents.create')">
+                        書類作成
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -76,6 +79,9 @@
             <x-responsive-nav-link :href="route('message.index')" :active="request()->routeIs('message.index')">
                 チャット
             </x-responsive-nav-link>
+            <x-nav-link :href="route('documents.create')" :active="request()->routeIs('documents.create')">
+                書類作成
+            </x-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
