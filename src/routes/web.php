@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/message', [MessageController::class, 'index'])->name('message.index');
     Route::post('/message', [MessageController::class, 'store'])->name('message.store');
     Route::post('/message/image', [MessageController::class, 'sendImageMessage'])->name('api.message.store');
+
+    // PDFドキュメント
+    Route::get('documents/create', [PdfController::class, 'create'])->name('documents.create');
+    Route::post('documents/download', [PdfController::class, 'download'])->name('documents.download');
+
+
 });
 
 require __DIR__.'/auth.php';
